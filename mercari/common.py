@@ -55,12 +55,26 @@ class Common:
         """
         pass
 
-    def fetch_items_pagination(
+    def fetch_search_items_pagination(
             self,
             keyword: str,
             page_id: int,
             price_min: Union[None, int],
             price_max: Union[None, int]
+    ) -> Union[List[str], Any]:  # List of URLS and a HTML marker.
+        """
+        :param keyword: Keyword for the search (required).
+        :param page_id: The page id for the pagination (e.g. 0, 1, 2...)
+        :param price_min: Minimum price in yen (optional).
+        :param price_max: Maximum price in yen (optional).
+        :rtype: List of URLS and a HTML marker.
+        """
+        pass
+
+    def fetch_user_items_pagination(
+            self,
+            user_id: int,
+            page_id: int
     ) -> Union[List[str], Any]:  # List of URLS and a HTML marker.
         """
         :param keyword: Keyword for the search (required).
@@ -81,7 +95,7 @@ class Common:
         """
         pass
 
-    def _fetch_url(
+    def _fetch_search_url(
             self,
             page: int,
             keyword: str,
@@ -92,6 +106,21 @@ class Common:
         # https://www.mercari.com/jp/search/?page=200&keyword=%E9%9F%BF%EF%BC%91%EF%BC%97&sort_order=&price_max=10000
         pass
 
+    def _fetch_profile_url(
+            self,
+            user_id: int,
+            page: int
+    ) -> str:
+        # https://fril.jp/s?max=30000&min=10000&order=desc&page=2&query=clothes&sort=relevance
+        # https://www.mercari.com/u/563891995/?page=1
+        pass
+
+    def fetch_all_items_from_profile(
+            self,
+            user_id: int
+    ) -> List[str]:  # list of URLs.
+        pass
+
     @property
     def name(self) -> str:
         return 'common'
@@ -99,8 +128,7 @@ class Common:
 
 def _get_soup(url: str) -> BeautifulSoup:
     logger.info(f'GET: {url}')
-    headers = {'User-Agent': "'Mozilla/5.0 (Windows NT 6.1; WOW64) AppleWebKit/537.36 "
-                             "(KHTML, like Gecko) Chrome/29.0.1547.62 Safari/537.36'"}
+    headers = {'User-Agent': "'Mozilla/5.0 (Windows NT 10.0; Win64; x64; rv:95.0) Gecko/20100101 Firefox/95.0'"}
     response = requests.get(url, headers=headers, timeout=20)
     if response.status_code != 200:
         logger.error(response)
